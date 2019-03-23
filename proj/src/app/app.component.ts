@@ -18,14 +18,14 @@ class Joke {
   selector: 'joke',
   template: `
     <div class="card card-block">
-      <h4 class="card-title">{{joke.setup}}</h4>
-      <p class="card-text" [hidden]="joke.hide">{{joke.punchline}}</p>
-      <button class="btn btn-primary" (click)="joke.toogle()">Tell Me</button>
+      <h4 class="card-title">{{data.setup}}</h4>
+      <p class="card-text" [hidden]="data.hide">{{data.punchline}}</p>
+      <button class="btn btn-primary" (click)="data.toggle()">Tell Me</button>
     </div>
   `
 })
 export class JokeComponent {
-  @Input() joke: Joke;
+  @Input('joke') data: Joke;
 }
 
 @Component({

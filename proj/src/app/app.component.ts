@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 class Joke {
   setup: string;
@@ -11,6 +11,28 @@ class Joke {
   }
   toggle(){
     this.hide = !this.hide;
+  }
+}
+
+@Component({
+  selector: 'joke-form',
+  template: `
+    <div class="card card-block">
+      <h4 class="card-title">Create Joke</h4>
+      <div class="form-group">
+        <input type="text" class="form-control" #setup placeholder="Enter the setup">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" #punchline placeholder="Enter the punchline">
+      </div>
+      <button type="button" (click)="createJoke(setup.value, punchline.value)" class="btn btn-primary">Create</button>
+    </div>
+  `
+})
+export class JokeFormComponent {
+  @Output() jokeCreated = new EventEmitter<Joke>();
+  createJoke(setup: string, punchline: string){
+    this.jokeCreated.emit(new Joke(setup, punchline));
   }
 }
 
@@ -30,7 +52,10 @@ export class JokeComponent {
 
 @Component({
   selector: 'joke-list',
-  template: `<joke *ngFor="let j of jokes" [joke]="j"></joke>`
+  template: `
+              <joke-form (jokeCreated)="addJoke($event)"></joke-form>
+              <joke *ngFor="let j of jokes" [joke]="j"></joke>
+            `
 })
 export class JokeListComponent {
   jokes: Joke[];
@@ -40,6 +65,9 @@ export class JokeListComponent {
       new Joke('HEADER222', 'PARAGRAPH222'),
       new Joke('HEADER333', 'PARAGRAPH333')
     ]
+  }
+  addJoke(joke){
+    this.jokes.unshift(joke);
   }
 }
 

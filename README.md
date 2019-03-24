@@ -11,3 +11,5 @@ arr: Array<Object>;
 Domain Models
 
 ngFor ngIf all comes from BrowserModule
+
+#setup // template reference variable

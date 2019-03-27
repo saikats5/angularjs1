@@ -84,3 +84,49 @@ import a as b from './';
 b();
 import * as utils from './';
 utils.b();
+
+let a: number;
+a = 1;
+number, boolean, string
+let list: number[] = [1,2,3]; // bracket notation
+let lists: Array<number> = [1,2,3];// generic type
+let fun: Function = ()=> console.log("Hello");
+function returnNumber(): number {
+    return 1;
+}
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+}
+let go: Direction;
+go = Direction.Up;
+
+class Person {};
+let person: Person;
+let people: Person[];
+
+let notsure: any = 1;
+notsure = 'hello';
+
+function returnNothing(): void {
+    console.log('foo'); // return nothing
+}
+
+let value: any = "saikat saha";
+(<string>value).length;
+
+Generic type
+class Audio {}
+class Video {}
+class Link {}
+class Text {}
+
+class Post<T>{
+    content: T;
+}
+let videoPost: Post<Video>;
+
+// don't provide any type then typescript assumes it to be 'any'
+// tsconfig.json // noImplicitAny: false // will accept 'any' // if true then throw error as it reuires the type

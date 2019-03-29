@@ -40,8 +40,10 @@ export class JokeFormComponent {
   selector: 'joke',
   template: `
     <div class="card card-block">
-      <h4 class="card-title">{{data.setup}}</h4>
-      <p class="card-text" [hidden]="data.hide">{{data.punchline}}</p>
+      <h4 class="card-title">
+        <ng-content select="span"></ng-content>
+      </h4>
+      <ng-content select=".punchline"></ng-content>
       <button class="btn btn-primary" (click)="data.toggle()">Tell Me</button>
     </div>
   `
@@ -54,7 +56,10 @@ export class JokeComponent {
   selector: 'joke-list',
   template: `
               <joke-form (jokeCreated)="addJoke($event)"></joke-form>
-              <joke *ngFor="let j of jokes" [joke]="j"></joke>
+              <joke *ngFor="let j of jokes" [joke]="j">
+                <span>{{j.setup}}</span>
+                <h1 class="punchline">{{j.punchline}}</h1>
+              </joke>
             `
 })
 export class JokeListComponent {

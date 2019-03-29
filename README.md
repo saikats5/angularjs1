@@ -145,3 +145,5 @@ ng build --prod // prod build
 class inside styles create a attribute for that component and it's get associated with the class
 encapsulation: ViewEncapsulation.Native(style does not leak out of the component scope -- uses shadow dom) -- by default it's emulated
 encapsulation: ViewEncapsulation.None(leak out the style) // inserted into HTML page as style tag
+
+content projection - <ng-content></ng-content>

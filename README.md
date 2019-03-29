@@ -129,4 +129,19 @@ class Post<T>{
 let videoPost: Post<Video>;
 
 // don't provide any type then typescript assumes it to be 'any'
-// tsconfig.json // noImplicitAny: false // will accept 'any' // if true then throw error as it reuires the type
+// tsconfig.json // noImplicitAny: false // will accept 'any' // if true then throw error as it requires the type
+
+ng g c LoginButton --> login-button // camelcase divides by -
+ng g directive <name>
+ng g pipe <name>
+ng g service <pipe>
+ng g class <name> // doesn't append class to it unlike others
+ng g interface <name>
+ng g enum <name>
+
+ng build // hosting on another server with minification // dev build
+ng build --prod // prod build
+
+class inside styles create a attribute for that component and it's get associated with the class
+encapsulation: ViewEncapsulation.Native(style does not leak out of the component scope -- uses shadow dom) -- by default it's emulated
+encapsulation: ViewEncapsulation.None(leak out the style) // inserted into HTML page as style tag

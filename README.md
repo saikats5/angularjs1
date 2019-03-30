@@ -147,3 +147,25 @@ encapsulation: ViewEncapsulation.Native(style does not leak out of the component
 encapsulation: ViewEncapsulation.None(leak out the style) // inserted into HTML page as style tag
 
 content projection - <ng-content></ng-content>
+
+life cycle hooks
+--- PARENT COMPONENT/OWN COMPONENT
+-- contructor // when component is created
+-- ngOnChanges // everytime there is change on Input property of the component
+-- ngOnInit // current component is being initialized only once after changes
+-- ngDoCheck // change detector of the given component is being invoked, allow us to implement our own change detection // donot use ngOnChanges and ngDoCheck together in the same component
+-- ngOnDestoy // before the angular destroys the component used to avoid memory leaks
+
+--- CHILD COMPONENT
+-- ngAfterContentInit // called after any content projection into the view
+-- ngAfterContentChecked // checked everytime by change detection mechanism by Angular
+-- ngAfterViewInit // component view has been fully initialized
+-- ngAfterViewChecked // checked everytime by change detection mechanism by Angular
+
+ngOnChanges(change: SimpleChange) // SimpleChange need to be imported from angular core
+no value -- CD_INIT_VALUE
+implement interface of all the hooks required
+import {Onchanges, OnInit, DoCheck} from '@angular/core';
+class test implements OnChanges, OnInit, DoCheck {}
+
+ViewChild // import from @angular/core

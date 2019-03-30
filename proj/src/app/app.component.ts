@@ -58,7 +58,7 @@ export class JokeComponent {
               <joke-form (jokeCreated)="addJoke($event)"></joke-form>
               <joke *ngFor="let j of jokes" [joke]="j">
                 <span>{{j.setup}}</span>
-                <h1 class="punchline">{{j.punchline}}</h1>
+                <h1 [hidden]="j.hide" class="punchline">{{j.punchline}}</h1>
               </joke>
             `
 })

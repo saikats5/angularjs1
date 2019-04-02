@@ -178,4 +178,6 @@ let jokes: JokeComponent[] = this.jokeViewChildren.toArray();
 this.headerEl.nativeElement.textContent = "Changed HEADER";
 #header
 
- @ContentChild(JokeComponent) jokeContentChild: JokeComponent;
+@ContentChild(JokeComponent) jokeContentChild: JokeComponent;
+
+<div *ngFor="let person of people; let i = index"> // index built-in keyword

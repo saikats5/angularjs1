@@ -169,3 +169,13 @@ import {Onchanges, OnInit, DoCheck} from '@angular/core';
 class test implements OnChanges, OnInit, DoCheck {}
 
 ViewChild // import from @angular/core
+@ViewChild(JokeComponent) jokeViewChild: JokeComponent; // get initialized on ngAfterViewInit() // shows the first child
+
+@ViewChildren(JokeComponent) jokeViewChildren: QueryList<JokeComponent>;
+let jokes: JokeComponent[] = this.jokeViewChildren.toArray();
+
+@ViewChild("header") headerEl: ElementRef;
+this.headerEl.nativeElement.textContent = "Changed HEADER";
+#header
+
+ @ContentChild(JokeComponent) jokeContentChild: JokeComponent;

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, AfterViewInit, AfterContentInit } from '@angular/core';
 
 class Joke {
   setup: string;
@@ -56,13 +56,20 @@ export class JokeComponent {
   selector: 'joke-list',
   template: `
               <joke-form (jokeCreated)="addJoke($event)"></joke-form>
+              <h4 #header>HEADER OF THE COMPONENT</h4>
               <joke *ngFor="let j of jokes" [joke]="j">
                 <span>{{j.setup}}</span>
                 <h1 [hidden]="j.hide" class="punchline">{{j.punchline}}</h1>
               </joke>
             `
 })
-export class JokeListComponent {
+export class JokeListComponent implements AfterViewInit, AfterContentInit {
+  @ViewChild(JokeComponent) jokeViewChild: JokeComponent;
+  @ViewChildren(JokeComponent) jokeViewChildren: QueryList<JokeComponent>;
+  @ViewChild("header") headerEl: ElementRef;
+
+  @ContentChild(JokeComponent) jokeContentChild: JokeComponent;
+
   jokes: Joke[];
   constructor(){
     this.jokes = [
@@ -70,6 +77,17 @@ export class JokeListComponent {
       new Joke('HEADER222', 'PARAGRAPH222'),
       new Joke('HEADER333', 'PARAGRAPH333')
     ]
+  }
+  ngAfterContentInit(){
+    console.log("----------------------->",this.jokeContentChild);
+  }
+  ngAfterViewInit(){
+    //console.log("=====>",this.jokeViewChild);
+    //console.log("=====>",this.jokeViewChildren);
+    let jokes: JokeComponent[] = this.jokeViewChildren.toArray();
+    //console.log("=============>",jokes);
+    //console.log("===================>",this.headerEl);
+    this.headerEl.nativeElement.textContent = "Changed HEADER";
   }
   addJoke(joke){
     this.jokes.unshift(joke);

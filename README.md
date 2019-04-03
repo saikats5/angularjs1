@@ -181,3 +181,9 @@ this.headerEl.nativeElement.textContent = "Changed HEADER";
 @ContentChild(JokeComponent) jokeContentChild: JokeComponent;
 
 <div *ngFor="let person of people; let i = index"> // index built-in keyword
+
+<div *ngIf="person.age < 30"></div>
+
+[ngSwitch]="person.country"
+*ngSwitchCase="'test'"
+*ngSwitchDefault

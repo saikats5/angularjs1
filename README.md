@@ -223,6 +223,23 @@ The <template> tag holds its content hidden from the client. //HTML5
 Custom Directive
 import { Directive } from '@angular/core';
 @Directive({
-    selector: "[ccCardHover]" //
+    selector: "[ccCardHover]" // [] -- attribute selector, . -- class seelector, name -- element selector
 })
-class CardHoverDirective {}
+class CardHoverDirective {
+    constructor(private el: ElementRef, private renderer: Renderer){ // import { ElementRef } from '@angular/core'; // give direct access to the DOM element to which it is attached
+        el.nativeElement.style.backgroundColor = 'gray';
+        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
+    }
+}
+
+// ElementRef -- always be running on browser environment, to make it work on different environment, we have to use Renderer
+
+HostListener / HostBinding // used along with directives
+@HostListener('mouseover') onMouseOver(){
+    let punchlineEl = this.el.nativeElement.querySelector('.card-text');
+    this.renderer.setElementStyle(punchlineEl, 'display', 'block');
+    this.isHovering = true;
+}
+
+@HostBinding('class.card-outline-primary') private isHovering: boolean = false;
+

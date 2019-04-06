@@ -187,3 +187,6 @@ this.headerEl.nativeElement.textContent = "Changed HEADER";
 [ngSwitch]="person.country"
 *ngSwitchCase="'test'"
 *ngSwitchDefault
+
+[ngStyle]="{'background-color':'green'}"
+[ngStyle]="{'background-color': person.country === 'India' ? 'green' : 'yellow'}"

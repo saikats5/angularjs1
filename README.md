@@ -190,3 +190,39 @@ this.headerEl.nativeElement.textContent = "Changed HEADER";
 
 [ngStyle]="{'background-color':'green'}"
 [ngStyle]="{'background-color': person.country === 'India' ? 'green' : 'yellow'}"
+[style.background-color]="getColor(person.country)"
+[ngStyle]="{'font-size.px':24}"
+[ngStyle]="{'font-size.%':24}"
+[style.font-size.px]="24"
+
+[ngClass]="{'text-success': true}"
+[ngClass]="{'text-success': person.country === 'IND', 'text-primary': person.country === 'UK'}"
+[class]="'text-success'"
+
+[class]="'text-success'" will replace class="class1 class2"
+to make it work [class.text-success] = "true"
+[class.text-success] = "person.country === 'IND'"
+
+<p ngNonBindable>{{name}}</p> // {{name}}
+
+3 built-in structural directive ngIf, ngFor, nfSwitch
+
+The <template> tag holds its content hidden from the client. //HTML5
+<ng-template [ngIf]="!data.hide">
+    <p>{{data.test}}</p>
+</ng-template>
+
+<ng-template ngFor
+             let-j
+             [ngForOf]="jokes">
+    <joke [joke]="j"></joke>
+</ng-template>
+
+// * tells the directive to treat the element as template, simplier way of writing structural directive with template
+
+Custom Directive
+import { Directive } from '@angular/core';
+@Directive({
+    selector: "[ccCardHover]" //
+})
+class CardHoverDirective {}

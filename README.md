@@ -243,3 +243,64 @@ HostListener / HostBinding // used along with directives
 
 @HostBinding('class.card-outline-primary') private isHovering: boolean = false;
 
+Configurable custom directive
+[config]="{querySelector: 'p'}
+@Input() config: Object = {querySelector: '.card-text'}
+let punchlineEl = this.el.nativeElement.querySelector(this.config.querySelector);
+
+[ccCardHover]="{querySelector: 'p'} // directly to the directive
+@Input('ccCardHover') config: Object = {querySelector: '.card-text'}
+
+Reactive Programming = Streams(sequence of data overtime) + Operations
+
+RxJS
+
+let obs = Rx.Obsevable; // observable is not a stream, blueprint to describe set of streams connected to operations
+let obs = Rx.Obsevable.interval(1000).operator2().operator3();
+operator act on observable to return observable, multiple operators can be applied on an observable
+let obs = Rx.Obsevable.interval(1000) // does not retutn anything it is just called
+obs.subscribe(value=>value);
+let obs = Rx.Obsevable.interval(1000).take(3); // take is also an operator which creates a stream, no. of streams is equal to no. of operators // output --> 0 1 2
+3 items will be taken from input stream and publish it to output stream
+let obs = Rx.Obsevable.interval(1000).take(3).map(v=>Date.now());
+we subscribe and get output of something pushed to last stream
+by default observables are cold and gets hot whenever they get their first subscriber
+
+//places where observables are in use
+EventEmitter, HTTP, Forms(Recative Forms)
+
+by using filter and map of RxJs we have restrict hackers from adding script/html tags
+replace(/<(?:.|\n)*?>/gm, ''); // replace tag with empty space
+
+Built-in Pipes
+{{1234.56 | currency:'GBP':true}} // GBP1,234.56 // true will show pound symbol and now accepts many things
+{{dateVal | date:'shortTime'}} // dateVal is new Date; private dateVal: Date = new Date(); // shortTime -- 3.23 PM // fullDate -- Saturday, October 29, 2016 // d/m/y -- 29/10/2019
+{{3.1413645 | number:'3.1-2'}} // 003.14 // 1.4-4 -- 3.1414
+{{jsonVal | json}} // {'name': 'MAX'}
+{{'Saikat' | lowercase}} // uppercase -- SAIKAT
+{{0.123456 | percent}} // 12.346% // percent:'2.1-2' -- 12.35%
+{{[1,2,3,4,5,6] | slice:1:3}} // 2,3 // slice:2:-1 -- 3,4,5
+
+Custom Pipe
+import {Pipe} from '@angular/core';
+@Pipe({
+    name: "default"
+})
+class DefaultPipe {
+    transform(value: string, fallback: string, forceHttps: boolean= false){
+        let image = "";
+        if(value){
+            image = value;
+        }else{
+            image = fallback;
+        }
+        if(forceHttps){
+            if(image.indexOf("https") === -1){
+                image = image.replace('http', 'https');
+            }
+        }
+        return image;
+    }
+}
+<img [src]="imageUrl | default: 'http://google.com/abc.jpg' : true">
+

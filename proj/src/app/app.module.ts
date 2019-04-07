@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppComponent, JokeListComponent, JokeComponent, JokeFormComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AppComponent, JokeListComponent, JokeComponent, JokeFormComponent, ModelFormComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginButtonComponent } from './header/login-button/login-button.component';
 
@@ -10,11 +11,13 @@ import { LoginButtonComponent } from './header/login-button/login-button.compone
     JokeListComponent,
     JokeComponent,
     JokeFormComponent,
+    ModelFormComponent,
     HeaderComponent,
     LoginButtonComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

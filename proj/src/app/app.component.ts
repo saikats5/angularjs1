@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 class Joke {
   setup: string;
@@ -13,6 +14,100 @@ class Joke {
     this.hide = !this.hide;
   }
 }
+
+@Component({
+  selector: 'model-form',
+  template: `
+    <form [formGroup]="myform" novalidate>
+      <fieldset formGroupName='name'>
+        <div class='form-group'>
+          <label>First Name</label>
+          <input type="text" class="form-control" formControlName='firstname'>
+        </div>
+        <div class='form-group'>
+          <label>Last Name</label>
+          <input type="text" class="form-control" formControlName='lastname'>
+        </div>
+      </fieldset>
+      <div class="form-group"
+      [ngClass]="{
+        'has-success': email.valid && (email.dirty || email.touched),
+        'has-danger': myform.controls.email.invalid && (myform.controls.email.dirty || myform.controls.email.touched)
+      }">
+        <label>Email</label>
+        <input type="email" class="form-control" formControlName="email">
+
+        <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
+          <p *ngIf="email.errors.required">Email is required</p>
+          <p *ngIf="email.errors.pattern">Email must contain @</p>
+        </div>
+
+        <!--<div class="form-control-feedback" *ngIf="email.invalid && (email.dirty || email.touched)">
+          <p>Email is required</p>
+        </div>-->
+
+        <pre>Dirty? {{myform.controls.email.dirty}}</pre>
+        <pre>Pristine? {{myform.controls.email.pristine}}</pre>
+        <pre>Touched? {{myform.controls.email.touched}}</pre>
+        <pre>Untouched? {{myform.controls.email.untouched}}</pre>
+        <pre>Valid? {{myform.controls.email.valid}}</pre>
+        <pre>Invalid? {{myform.controls.email.invalid}}</pre>
+      </div>
+      <div class="form-group">
+        <label>Pasword</label>
+        <input type="password" class="form-control" formControlName="password">
+      </div>
+    </form>
+  `
+})
+export class ModelFormComponent implements OnInit {
+  myform: FormGroup;
+  firstname: FormControl;
+  lastname: FormControl;
+  email: FormControl;
+  password: FormControl;
+  language: FormControl;
+
+  langs: string[] = ['English', 'Hindi', 'Bengali'];
+
+  ngOnInit(){
+    this.createFormControls();
+    this.createForm();
+  }
+
+  createFormControls(){
+    this.firstname = new FormControl('', Validators.required);
+    this.lastname = new FormControl('', Validators.required);
+    this.email = new FormControl('',[Validators.required, Validators.pattern("[^ @]*[^ @]*")]);
+    this.password = new FormControl('',[Validators.required, Validators.minLength(8)]);
+    this.language = new FormControl();
+  }
+
+  createForm(){
+    this.myform = new FormGroup({
+      name: new FormGroup({
+        firstname: this.firstname,
+        lastname: this.lastname
+      }),
+      email: this.email,
+      password: this.password,
+      language: this.language
+    })
+  }
+
+/*   ngOnInit(){
+    this.myform = new FormGroup({
+      name: new FormGroup({
+        firstname: new FormControl('', Validators.required),
+        lastname: new FormControl('', Validators.required)
+      }),
+      email: new FormControl('',[Validators.required, Validators.pattern("[^ @]*[^ @]*")]),
+      password: new FormControl('',[Validators.required, Validators.minLength(8)]),
+      language: new FormControl()
+    })
+  } */
+}
+
 
 @Component({
   selector: 'joke-form',
@@ -54,7 +149,7 @@ export class JokeComponent {
 
 @Component({
   selector: 'joke-list',
-  template: `
+  template: ` <model-form></model-form>
               <joke-form (jokeCreated)="addJoke($event)"></joke-form>
               <h4 #header>HEADER OF THE COMPONENT</h4>
               <joke *ngFor="let j of jokes" [joke]="j">

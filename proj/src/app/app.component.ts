@@ -18,7 +18,7 @@ class Joke {
 @Component({
   selector: 'model-form',
   template: `
-    <form [formGroup]="myform" novalidate>
+    <form [formGroup]="myform" novalidate (ngSubmit)="onSubmit()">
       <fieldset formGroupName='name'>
         <div class='form-group'>
           <label>First Name</label>
@@ -57,6 +57,14 @@ class Joke {
         <label>Pasword</label>
         <input type="password" class="form-control" formControlName="password">
       </div>
+      <div class="form-group">
+        <label>Language</label>
+        <select class="form-control">
+          <option value="">Please select a language</option>
+          <option *ngFor="let lang of langs" [value]="lang">{{lang}}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   `
 })
@@ -78,7 +86,7 @@ export class ModelFormComponent implements OnInit {
   createFormControls(){
     this.firstname = new FormControl('', Validators.required);
     this.lastname = new FormControl('', Validators.required);
-    this.email = new FormControl('',[Validators.required, Validators.pattern("[^ @]*[^ @]*")]);
+    this.email = new FormControl('',[Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]);
     this.password = new FormControl('',[Validators.required, Validators.minLength(8)]);
     this.language = new FormControl();
   }
@@ -93,6 +101,13 @@ export class ModelFormComponent implements OnInit {
       password: this.password,
       language: this.language
     })
+  }
+
+  onSubmit(){
+    if(this.myform.valid){
+      console.log(this.myform.value);
+      this.myform.reset();
+    }
   }
 
 /*   ngOnInit(){

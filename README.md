@@ -304,3 +304,12 @@ class DefaultPipe {
 }
 <img [src]="imageUrl | default: 'http://google.com/abc.jpg' : true">
 
+HTTP Module is a collection of multiple provider class
+get?foo=moo&limit=25
+
+OPTIONS request always send by browser for delete, put and post, just to make sure the app is allowed to perform delete, put and post
+
+URLSearchParams--> query parameters
+
+for post 2nd parameter should be a payload not query parameter and 3rd will be query parameter
+

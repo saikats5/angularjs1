@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response, RequestOptions, Headers, URLSearchParams } from '@angular/http';
 
 class Joke {
   setup: string;
@@ -92,6 +92,9 @@ class Joke {
   `
 })
 export class ModelFormComponent implements OnInit {
+
+  apiRoot: string = "http://httpbin.org";
+
   myform: FormGroup;
   firstname: FormControl;
   lastname: FormControl;
@@ -133,6 +136,38 @@ export class ModelFormComponent implements OnInit {
       console.log(this.myform.value);
       this.myform.reset();
     }
+  }
+
+  doGET(){
+    let url=`${this.apiRoot}/get`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', 25);
+    this.http.get(url, {search: search}).subscribe(res=>console.log(res.json()));
+  }
+
+  doPOST(){
+    let url=`${this.apiRoot}/post`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', 25);
+    this.http.post(url, {moo:'foo', goo: 'loo'}).subscribe(res=>console.log(res.json()));
+  }
+
+  doPUT(){
+    let url=`${this.apiRoot}/put`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', 25);
+    this.http.put(url, {moo:'foo', goo: 'loo'}).subscribe(res=>console.log(res.json()));
+  }
+
+  doDELETE(){
+    let url=`${this.apiRoot}/delete`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', 25);
+    this.http.delete(url, {search: search}).subscribe(res=>console.log(res.json()));
   }
 
 /*   ngOnInit(){

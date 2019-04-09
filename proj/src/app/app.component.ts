@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 
 class Joke {
   setup: string;
@@ -18,6 +19,28 @@ class Joke {
 @Component({
   selector: 'model-form',
   template: `
+    <div class="row">
+      <div class="m-t-1 m-l-1">
+        <button class="btn btn-sm btn-primary" (click)="doGET()">GET</button>
+        <button class="btn btn-sm btn-primary" (click)="doPOST()">POST</button>
+        <button class="btn btn-sm btn-primary" (click)="doPUT()">PUT</button>
+        <button class="btn btn-sm btn-primary" (click)="doDELETE()">DELETE</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="m-t-1 m-l-1">
+        <button class="btn btn-sm btn-secondary" (click)="doGETAsPromise()">As Promise</button>
+        <button class="btn btn-sm btn-secondary" (click)="doGETAsPromiseError()">Error as Promise</button>
+        <button class="btn btn-sm btn-secondary" (click)="doGETAsObservableError()">Error as Promise</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="m-t-1 m-l-1">
+        <button class="btn btn-sm btn-danger" (click)="doGETWithHeaders()">With Headers</button>
+      </div>
+    </div>
+
+
     <form [formGroup]="myform" novalidate (ngSubmit)="onSubmit()">
       <fieldset formGroupName='name'>
         <div class='form-group'>
@@ -77,6 +100,8 @@ export class ModelFormComponent implements OnInit {
   language: FormControl;
 
   langs: string[] = ['English', 'Hindi', 'Bengali'];
+
+  constructor(private http: Http){}
 
   ngOnInit(){
     this.createFormControls();

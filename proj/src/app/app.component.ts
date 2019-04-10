@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
+import { Component, Input, Output, Injectable, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Http, Response, RequestOptions, Headers, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
@@ -17,9 +17,53 @@ class Joke {
   }
 }
 
+@Injectable()
+export class SearchService {
+  apiRoot: string = 'https://itunes.apple.com/search';
+  results: Object[];
+  loading: boolean;
+
+  constructor(private http:Http){
+    this.results = [];
+    this.loading = false;
+  }
+
+  search(term: string){
+    let promise = new Promise((resolve, reject)=>{
+      let apiURL = `${this.apiRoot}?term=${term}&media=music&limit=20`;
+      this.http.get(apiURL)
+      .toPromise()
+      .then(
+        res=>{
+          console.log(res.json())
+        }
+      )
+    })
+    return promise;
+  }
+
+}
+
+@Component({
+  selector: 'search-section',
+  template: `<form class="form-inline">
+      <div class="form-group">
+        <input type="search" class="form-control" placeholder="Enter search string" #search>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="doSearch(search.value)">Search</button>
+  </form>`
+})
+export class SearchSection {
+  constructor(private itunes:SearchService){}
+  doSearch(term: string){
+    this.itunes.search(term);
+  }
+}
+
 @Component({
   selector: 'model-form',
   template: `
+    <search-section></search-section>
     <div class="row">
       <div class="m-t-1 m-l-1">
         <button class="btn btn-sm btn-primary" (click)="doGET()">GET</button>

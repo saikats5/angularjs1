@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef, ContentChild, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Http, Response, RequestOptions, Headers, URLSearchParams } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 
 class Joke {
   setup: string;
@@ -142,7 +143,7 @@ export class ModelFormComponent implements OnInit {
     let url=`${this.apiRoot}/get`;
     let search = new URLSearchParams();
     search.set('foo','moo');
-    search.set('limit', 25);
+    search.set('limit', '25');
     this.http.get(url, {search: search}).subscribe(res=>console.log(res.json()));
   }
 
@@ -150,7 +151,7 @@ export class ModelFormComponent implements OnInit {
     let url=`${this.apiRoot}/post`;
     let search = new URLSearchParams();
     search.set('foo','moo');
-    search.set('limit', 25);
+    search.set('limit', '25');
     this.http.post(url, {moo:'foo', goo: 'loo'}).subscribe(res=>console.log(res.json()));
   }
 
@@ -158,7 +159,7 @@ export class ModelFormComponent implements OnInit {
     let url=`${this.apiRoot}/put`;
     let search = new URLSearchParams();
     search.set('foo','moo');
-    search.set('limit', 25);
+    search.set('limit', '25');
     this.http.put(url, {moo:'foo', goo: 'loo'}).subscribe(res=>console.log(res.json()));
   }
 
@@ -166,8 +167,49 @@ export class ModelFormComponent implements OnInit {
     let url=`${this.apiRoot}/delete`;
     let search = new URLSearchParams();
     search.set('foo','moo');
-    search.set('limit', 25);
+    search.set('limit', '25');
     this.http.delete(url, {search: search}).subscribe(res=>console.log(res.json()));
+  }
+
+  doGETAsPromise(){
+    let url=`${this.apiRoot}/get`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', '25');
+    this.http.get(url, {search: search}).toPromise().then(res=>console.log(res.json()));
+  }
+
+  doGETAsPromiseError(){
+    let url=`${this.apiRoot}/post`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', '25');
+    this.http.get(url, {search: search}).toPromise().then(res=>console.log(res.json()),
+    //msg => console.error(`Error: ${msg.status} ${msg.statusText}`)
+    ).catch(msg => console.error(`Error: ${msg.status} ${msg.statusText}`))
+  }
+
+  doGETAsObservableError(){
+    let url=`${this.apiRoot}/post`;
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', '25');
+    this.http.get(url, {search: search}).subscribe(res=>console.log(res.json()),
+    msg => console.error(`Error: ${msg.status} ${msg.statusText}`))
+  }
+
+  doGETWithHeaders(){
+    let headers = new Headers();
+    headers.append('Authorization', btoa('username:pasword'));
+    let search = new URLSearchParams();
+    search.set('foo','moo');
+    search.set('limit', '25');
+    let opts = new RequestOptions();
+    opts.headers = headers;
+    opts.search = search;
+    let url = `${this.apiRoot}/get`;
+    this.http.get(url, opts).subscribe(res=>console.log(res.json()),
+    msg => console.error(`Error: ${msg.status} ${msg.statusText}`))
   }
 
 /*   ngOnInit(){

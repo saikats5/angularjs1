@@ -35,7 +35,12 @@ export class SearchService {
       .toPromise()
       .then(
         res=>{
-          console.log(res.json())
+          //console.log(res.json());
+          this.results = res.json().results;
+          resolve();
+        },
+        msg=>{
+          reject();
         }
       )
     })
@@ -47,11 +52,17 @@ export class SearchService {
 @Component({
   selector: 'search-section',
   template: `<form class="form-inline">
-      <div class="form-group">
-        <input type="search" class="form-control" placeholder="Enter search string" #search>
-      </div>
-      <button type="button" class="btn btn-primary" (click)="doSearch(search.value)">Search</button>
-  </form>`
+                  <div class="form-group">
+                    <input type="search" class="form-control" placeholder="Enter search string" #search>
+                  </div>
+                  <button type="button" class="btn btn-primary" (click)="doSearch(search.value)">Search</button>
+              </form>
+              <hr/>
+              <ul>
+                <li *ngFor="let track of itunes.results">
+                  {{track.trackName}}
+                </li>
+              </ul>`
 })
 export class SearchSection {
   constructor(private itunes:SearchService){}
